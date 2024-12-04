@@ -1,0 +1,6 @@
+/dist/
+/build/
+/instance/
+/limitedmediaserver.exe
+/limitedmediaserver_control.exe
+.idea

@@ -39,7 +39,7 @@ def show_notice(title, message):
         title=title,
         message=message,
         app_name="Limited Media Server",
-        timeout=5  # duration in seconds,
+        timeout=2  # duration in seconds,
     )
 
 def open_browser(systray):
@@ -55,7 +55,7 @@ def start_program(systray):
         update_menu()
         return
 
-    end_process = False
+    #end_process = False
 
     def run_process():
         global process
@@ -72,8 +72,6 @@ def start_program(systray):
 
                 # Capture output
                 for line in process.stdout:
-                    if end_process:
-                        break
                     output_buffer.append(line.strip())
 
                 process.wait()
@@ -83,7 +81,7 @@ def start_program(systray):
                     print("Process exited with code 69. Performing extra work...")
                     # Perform extra work here
                 else:
-                    show_notice('Server Notice', 'Limited Media Server is shutting down!')
+                    #show_notice('Server Notice', 'Limited Media Server is shutting down!')
                     print(f"Process exited with code {process.returncode}. Stopping...")
                     break
             except Exception as e:
@@ -147,7 +145,7 @@ def show_output(systray):
             text_widget.config(state='normal')
             text_widget.delete(1.0, END)
             for line in output_buffer:
-                text_widget.insert(END, line + "\n")
+                text_widget.insert(END, line.decode('utf-8') + "\n")
             text_widget.config(state='disabled')
             text_widget.see(END)  # Scroll to the bottom
 
@@ -160,6 +158,8 @@ def show_output(systray):
     # Refresh button
     refresh_button = Button(root, text="Refresh", command=refresh_log)
     refresh_button.pack(side='bottom', pady=5)
+
+    refresh_log()
 
     root.protocol("WM_DELETE_WINDOW", on_close)
     root.mainloop()
